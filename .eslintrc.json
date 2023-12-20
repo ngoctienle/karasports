@@ -1,7 +1,24 @@
 {
   "root": true,
-  "ignorePatterns": ["**/*"],
-  "plugins": ["@nx"],
+  "plugins": ["@nx", "@typescript-eslint"],
+  "parser": "@typescript-eslint/parser",
+  "env": {
+    "browser": true,
+    "es6": true,
+    "jest": true,
+    "amd": true,
+    "commonjs": true
+  },
+  "extends": [
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
+  ],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
   "overrides": [
     {
       "files": "*.json",
@@ -10,21 +27,7 @@
     },
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
-      "rules": {
-        "@nx/enforce-module-boundaries": [
-          "error",
-          {
-            "enforceBuildableLibDependency": true,
-            "allow": [],
-            "depConstraints": [
-              {
-                "sourceTag": "*",
-                "onlyDependOnLibsWithTags": ["*"]
-              }
-            ]
-          }
-        ]
-      }
+      "rules": {}
     },
     {
       "files": ["*.ts", "*.tsx"],
@@ -43,5 +46,19 @@
       },
       "rules": {}
     }
-  ]
+  ],
+  "rules": {
+    "@typescript-eslint/ban-types": "off",
+    "react/prop-types": "off",
+    "react/react-in-jsx-scope": "off",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_"
+      }
+    ],
+    "react/jsx-no-target-blank": "off"
+  }
 }

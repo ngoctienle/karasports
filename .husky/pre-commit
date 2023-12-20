@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo 'Running Git Hooks'
+echo "🔎... Checking validity of types ⌛️"
+
+pnpm lint || (
+    "⛔️ There is a type error in your code, fix it first, and try commit again. ⛔️";
+    false;
+)
+echo "✅ No TypeError found"
+echo "⌛️ Running git commit ⌛️"
