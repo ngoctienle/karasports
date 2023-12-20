@@ -128,6 +128,19 @@ importers:
         specifier: ^5.0.8
         version: 5.0.8(@types/node@18.16.9)
 
+  packages/core:
+    dependencies:
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+    devDependencies:
+      '@types/react':
+        specifier: ^18.2.0
+        version: 18.2.43
+      '@types/react-dom':
+        specifier: ^18.2.0
+        version: 18.2.17
+
   packages/generate:
     dependencies:
       '@nx/devkit':
