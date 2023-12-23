@@ -1,0 +1,25 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "outDir": "../../dist/apps/api",
+    "rootDir": ".",
+    "plugins": [
+      { "transform": "typescript-transform-paths" },
+      { "transform": "typescript-transform-paths", "afterDeclarations": true }
+    ],
+    "target": "ES2016",
+    "module": "CommonJS",
+    "lib": ["DOM", "ES2016"],
+    "strict": true,
+    "noImplicitAny": true,
+    "allowSyntheticDefaultImports": true,
+    "pretty": true,
+    "resolveJsonModule": true,
+    "paths": {
+      "@global/*": ["src/shared/globals/*"],
+      "@root/*": ["src/*"]
+    }
+  },
+  "exclude": ["node_modules", "build"]
+}
