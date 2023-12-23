@@ -1,0 +1,21 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": ".",
+    "jsx": "react-jsx",
+    "lib": ["DOM", "ES2015"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "target": "ES6",
+    "allowJs": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "typeRoots": ["./types", "../../node_modules/@types"],
+    "paths": {
+      "@core/*": ["src/*"]
+    }
+  },
+  "include": ["src", "types"],
+  "exclude": ["dist", "node_modules", "build"]
+}
