@@ -1,0 +1,28 @@
+{
+  "name": "@karasports/form",
+  "version": "1.0.0",
+  "description": "a base form created from antd form and react-hook-form",
+  "main": "./dist/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "files": [
+    "dist/**"
+  ],
+  "scripts": {
+    "prepare": "pnpm build",
+    "build": "tsup --format esm,cjs,iife --minify --legacy-output"
+  },
+  "author": "Tien Le Ngoc <info@karasports.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0"
+  },
+  "dependencies": {
+    "antd": "^5.12.5",
+    "dayjs": "^1.11.10",
+    "react": "^18.2.0",
+    "react-hook-form": "^7.49.2"
+  }
+}
