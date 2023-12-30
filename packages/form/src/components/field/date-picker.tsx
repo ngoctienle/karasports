@@ -1,54 +1,58 @@
-import { ReactNode } from 'react'
-import { Controller, UseFormReturn } from 'react-hook-form'
 import dayjs, { Dayjs } from 'dayjs'
-import { DatePicker as DatePickerAntd, FormItemProps } from 'antd'
-import { PickerProps } from 'antd/lib/date-picker/generatePicker'
+import { Controller, ControllerProps, FieldPath, FieldValues } from 'react-hook-form'
+import { FormItemProps, Form, PickerProps, DatePicker as DatePickerAntd } from '@karasports/ui'
 
-import { KaraFormItem } from '@core/components/base'
+import { FormFieldContext, KaraLabel } from 'src/components/base'
 
-type DatePickerProps = PickerProps<Dayjs> & {
-  name: string
-  label: ReactNode
+type IDatePickerProps<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+> = PickerProps<Dayjs> & {
+  name: ControllerProps<TFieldValues, TName>['name']
+  control: ControllerProps<TFieldValues, TName>['control']
+  label: string
+  formItemProps?: Omit<FormItemProps, 'label'>
   customHelp?: string
-  formHook: UseFormReturn
-  formItemProps?: FormItemProps
 }
 
-export const DatePicker = ({
+export const DatePicker = <
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+>({
   name,
+  control,
   label,
-  formHook,
-  customHelp,
   formItemProps,
+  customHelp,
   ...props
-}: DatePickerProps) => {
-  const { control } = formHook
-
+}: IDatePickerProps<TFieldValues, TName>) => {
   return (
-    <Controller
-      name={name}
-      render={({ field, fieldState }) => {
-        const { onChange, value, onBlur } = field
-        const { error } = fieldState
+    <FormFieldContext.Provider value={{ name: name }}>
+      <Controller
+        name={name}
+        control={control}
+        render={({ field, fieldState }) => {
+          const { onChange, value, onBlur } = field
+          const { error } = fieldState
 
-        return (
-          <KaraFormItem
-            {...formItemProps}
-            label={label}
-            validateStatus={error ? 'error' : 'validating'}
-            help={error ? error?.message : customHelp || undefined}>
-            <DatePickerAntd
-              {...props}
-              onBlur={onBlur}
-              onChange={(date) => {
-                onChange(date)
-              }}
-              value={dayjs(value).second(0)}
-            />
-          </KaraFormItem>
-        )
-      }}
-      control={control}
-    />
+          return (
+            <Form.Item
+              {...formItemProps}
+              label={<KaraLabel value={label} />}
+              validateStatus={error ? 'error' : 'validating'}
+              help={error ? error?.message : customHelp || undefined}>
+              <DatePickerAntd
+                {...props}
+                onBlur={onBlur}
+                onChange={(date) => {
+                  onChange(date)
+                }}
+                value={dayjs(value).second(0)}
+              />
+            </Form.Item>
+          )
+        }}
+      />
+    </FormFieldContext.Provider>
   )
 }

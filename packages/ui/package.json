@@ -1,7 +1,7 @@
 {
-  "name": "@karasports/form",
+  "name": "@karasports/ui",
   "version": "1.0.0",
-  "description": "a base form created from antd form and react-hook-form",
+  "description": "",
   "main": "./dist/index.js",
   "module": "./dist/esm/index.js",
   "types": "./dist/index.d.ts",
@@ -20,11 +20,7 @@
     "@types/react-dom": "^18.2.0"
   },
   "dependencies": {
-    "@hookform/resolvers": "^3.3.3",
-    "@karasports/ui": "workspace:^",
-    "dayjs": "^1.11.10",
-    "react": "^18.2.0",
-    "react-hook-form": "^7.49.2",
-    "zod": "^3.22.4"
+    "antd": "^5.12.5",
+    "react": "^18.2.0"
   }
 }

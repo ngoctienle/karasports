@@ -1,28 +1,10 @@
-import { Form, FormProps } from 'antd'
-import React from 'react'
-import { FieldValues, FormProvider, UseFormReturn } from 'react-hook-form'
+import * as React from 'react'
+import { Form, FormProps } from '@karasports/ui'
 
-interface IKaraFormProps extends FormProps {
-  formHook: UseFormReturn
-  onSubmit: (values: FieldValues) => void
+interface IKaraFormProps extends Omit<FormProps, 'children'> {
   children: React.ReactNode
 }
 
-const KaraForm: React.FC<IKaraFormProps> = ({
-  children,
-  onSubmit,
-  formHook,
-  ...props
-}) => {
-  const { handleSubmit } = formHook
-
-  return (
-    <FormProvider {...formHook}>
-      <Form {...props} onFinish={handleSubmit(onSubmit)}>
-        {children}
-      </Form>
-    </FormProvider>
-  )
+export const KaraForm: React.FC<IKaraFormProps> = ({ children, ...props }) => {
+  return <Form {...props}>{children}</Form>
 }
-
-export default KaraForm

@@ -1,8 +1,6 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "baseUrl": ".",
-    "rootDir": ".",
     "jsx": "react-jsx",
     "lib": ["DOM", "ES2015"],
     "module": "NodeNext",

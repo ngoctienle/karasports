@@ -1,51 +1,58 @@
-import { ReactNode } from 'react'
-import { Controller, UseFormReturn } from 'react-hook-form'
-import { FormItemProps, Input } from 'antd'
-import { PasswordProps } from 'antd/lib/input'
+import { Controller, ControllerProps, FieldPath, FieldValues } from 'react-hook-form'
+import { FormItemProps, Input, Form, InputRef, PasswordProps } from '@karasports/ui'
 
-import { KaraFormItem } from '@core/components/base'
+import { FormFieldContext, KaraLabel } from 'src/components/base'
 
-interface InputPasswordProps extends PasswordProps {
-  name: string
-  label: ReactNode
+interface IInputPasswordFieldProps<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+> extends PasswordProps {
+  name: ControllerProps<TFieldValues, TName>['name']
+  control: ControllerProps<TFieldValues, TName>['control']
+  label: string
+  formItemProps?: Omit<FormItemProps, 'label'>
   customHelp?: string
-  formHook: UseFormReturn
-  formItemProps?: FormItemProps
+  ref?: React.Ref<InputRef>
 }
 
-export const InputPasswordField = ({
+export const InputPasswordField = <
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+>({
   name,
+  control,
   label,
-  formHook,
-  customHelp,
   formItemProps,
+  customHelp,
+  ref,
   ...props
-}: InputPasswordProps) => {
-  const { control } = formHook
-
+}: IInputPasswordFieldProps<TFieldValues, TName>) => {
   return (
-    <Controller
-      name={name}
-      render={({ field, fieldState }) => {
-        const { onChange, value, onBlur } = field
-        const { error } = fieldState
+    <FormFieldContext.Provider value={{ name: name }}>
+      <Controller
+        name={name}
+        control={control}
+        render={({ field, fieldState }) => {
+          const { onChange, value, onBlur } = field
+          const { error } = fieldState
 
-        return (
-          <KaraFormItem
-            {...formItemProps}
-            label={label}
-            validateStatus={error ? 'error' : 'validating'}
-            help={error ? error?.message : customHelp || undefined}>
-            <Input.Password
-              {...props}
-              value={value}
-              onChange={onChange}
-              onBlur={onBlur}
-            />
-          </KaraFormItem>
-        )
-      }}
-      control={control}
-    />
+          return (
+            <Form.Item
+              {...formItemProps}
+              label={<KaraLabel value={label} />}
+              validateStatus={error ? 'error' : 'validating'}
+              help={error ? error?.message : customHelp || undefined}>
+              <Input.Password
+                {...props}
+                value={value}
+                onChange={onChange}
+                onBlur={onBlur}
+                ref={ref}
+              />
+            </Form.Item>
+          )
+        }}
+      />
+    </FormFieldContext.Provider>
   )
 }

@@ -1,53 +1,52 @@
-import { ReactNode, Ref } from 'react'
-import { Controller, UseFormReturn } from 'react-hook-form'
-import { FormItemProps, Input, InputProps, InputRef } from 'antd'
+import { Controller, ControllerProps, FieldPath, FieldValues } from 'react-hook-form'
+import { FormItemProps, Input, InputProps, Form, InputRef } from '@karasports/ui'
 
-import { KaraFormItem } from '@core/components/base'
+import { FormFieldContext, KaraLabel } from 'src/components/base'
 
-interface InputFieldProps extends InputProps {
-  name: string
-  label: ReactNode
+interface IInputFieldProps<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+> extends InputProps {
+  name: ControllerProps<TFieldValues, TName>['name']
+  control: ControllerProps<TFieldValues, TName>['control']
+  label: string
+  formItemProps?: Omit<FormItemProps, 'label'>
   customHelp?: string
-  formHook: UseFormReturn
-  formItemProps?: FormItemProps
-  ref?: Ref<InputRef>
+  ref?: React.Ref<InputRef>
 }
 
-export const InputField = ({
+export const InputField = <
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+>({
   name,
+  control,
   label,
-  formHook,
-  customHelp,
   formItemProps,
+  customHelp,
   ref,
   ...props
-}: InputFieldProps) => {
-  const { control } = formHook
-
+}: IInputFieldProps<TFieldValues, TName>) => {
   return (
-    <Controller
-      name={name}
-      render={({ field, fieldState }) => {
-        const { onChange, value, onBlur } = field
-        const { error } = fieldState
+    <FormFieldContext.Provider value={{ name: name }}>
+      <Controller
+        name={name}
+        control={control}
+        render={({ field, fieldState }) => {
+          const { onChange, value, onBlur } = field
+          const { error } = fieldState
 
-        return (
-          <KaraFormItem
-            {...formItemProps}
-            label={label}
-            validateStatus={error ? 'error' : 'validating'}
-            help={error ? error?.message : customHelp || undefined}>
-            <Input
-              {...props}
-              value={value}
-              onChange={onChange}
-              onBlur={onBlur}
-              ref={ref}
-            />
-          </KaraFormItem>
-        )
-      }}
-      control={control}
-    />
+          return (
+            <Form.Item
+              {...formItemProps}
+              label={<KaraLabel value={label} />}
+              validateStatus={error ? 'error' : 'validating'}
+              help={error ? error?.message : customHelp || undefined}>
+              <Input {...props} value={value} onChange={onChange} onBlur={onBlur} ref={ref} />
+            </Form.Item>
+          )
+        }}
+      />
+    </FormFieldContext.Provider>
   )
 }

@@ -1,44 +1,53 @@
-import { Controller, UseFormReturn } from 'react-hook-form'
-import { Checkbox, CheckboxProps, FormItemProps } from 'antd'
+import { Controller, ControllerProps, FieldPath, FieldValues } from 'react-hook-form'
+import { FormItemProps, Form, CheckboxProps, Checkbox } from '@karasports/ui'
 
-import { KaraFormItem } from '@core/components/base'
+import { FormFieldContext, KaraLabel } from 'src/components/base'
 
-interface CheckboxFieldProps extends CheckboxProps {
-  name: string
+interface ICheckboxFieldProps<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+> extends CheckboxProps {
+  name: ControllerProps<TFieldValues, TName>['name']
+  control: ControllerProps<TFieldValues, TName>['control']
+  label: string
+  formItemProps?: Omit<FormItemProps, 'label'>
   customHelp?: string
-  formHook: UseFormReturn
-  formItemProps?: FormItemProps
 }
 
-export const CheckboxField = ({
+export const CheckboxField = <
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+>({
   name,
-  formHook,
-  customHelp,
+  control,
+  label,
   formItemProps,
+  customHelp,
   children,
   ...props
-}: CheckboxFieldProps) => {
-  const { control } = formHook
-
+}: ICheckboxFieldProps<TFieldValues, TName>) => {
   return (
-    <Controller
-      name={name}
-      render={({ field, fieldState }) => {
-        const { onChange, value } = field
-        const { error } = fieldState
+    <FormFieldContext.Provider value={{ name: name }}>
+      <Controller
+        name={name}
+        control={control}
+        render={({ field, fieldState }) => {
+          const { onChange, value } = field
+          const { error } = fieldState
 
-        return (
-          <KaraFormItem
-            {...formItemProps}
-            validateStatus={error ? 'error' : 'validating'}
-            help={error ? error?.message : customHelp || undefined}>
-            <Checkbox {...props} checked={value} onChange={onChange}>
-              {children}
-            </Checkbox>
-          </KaraFormItem>
-        )
-      }}
-      control={control}
-    />
+          return (
+            <Form.Item
+              {...formItemProps}
+              label={<KaraLabel value={label} />}
+              validateStatus={error ? 'error' : 'validating'}
+              help={error ? error?.message : customHelp || undefined}>
+              <Checkbox {...props} checked={value} onChange={onChange}>
+                {children}
+              </Checkbox>
+            </Form.Item>
+          )
+        }}
+      />
+    </FormFieldContext.Provider>
   )
 }
