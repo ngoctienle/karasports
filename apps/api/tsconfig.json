@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "baseUrl": ".",
-    "outDir": "../../dist/apps/api",
+    "outDir": "../../dist/api",
     "rootDir": ".",
     "plugins": [
       { "transform": "typescript-transform-paths" },

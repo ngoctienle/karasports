@@ -6,7 +6,7 @@ export default defineConfig({
   base: '/dashboard',
   plugins: [react()],
   build: {
-    outDir: '../../dist/apps/admin'
+    outDir: '../../dist/admin'
   },
   server: {
     port: 3000
