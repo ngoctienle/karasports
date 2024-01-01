@@ -13,7 +13,8 @@
     "build:api": "nx run @karasports/api:build",
     "generate:react": "nx g generate:reactlib",
     "commit": "git cz",
-    "lint": "eslint -c ./.eslintrc.json apps packages --report-unused-disable-directives --max-warnings 0"
+    "lint": "eslint -c ./.eslintrc.json apps packages --report-unused-disable-directives --max-warnings 0",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx}\""
   },
   "devDependencies": {
     "@commitlint/cli": "^18.4.3",

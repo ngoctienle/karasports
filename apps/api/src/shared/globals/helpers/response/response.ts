@@ -1,11 +1,7 @@
 import { Response, Request } from 'express'
 import HTTP_STATUS from 'http-status-codes'
 
-import {
-  IBaseError,
-  IBaseResponseData,
-  IBaseResponseError
-} from './types/response.type'
+import { IBaseError, IBaseResponseData, IBaseResponseError } from './types/response.type'
 
 export default class KRSResponse {
   static success<T>(

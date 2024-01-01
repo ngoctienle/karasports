@@ -1,12 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import {
-  Application,
-  json,
-  urlencoded,
-  Response,
-  Request,
-  NextFunction
-} from 'express'
+import { Application, json, urlencoded, Response, Request, NextFunction } from 'express'
 import { Server } from 'socket.io'
 import http from 'http'
 import hpp from 'hpp'
@@ -83,31 +76,24 @@ export class KRSServer {
       )
     })
 
-    app.use(
-      (error: KRSError, req: Request, res: Response, next: NextFunction) => {
-        log.error(error)
-        if (error instanceof KRSError) {
-          KRSResponse.error(
-            req,
-            res,
-            error.serializeErrors(),
-            error.status_code
-          )
-        } else {
-          KRSResponse.error(
-            req,
-            res,
-            {
-              error_code: ['INTERNAL_SERVER_ERROR'],
-              status_code: HTTP_STATUS.INTERNAL_SERVER_ERROR,
-              message: 'Internal Server Error'
-            },
-            HTTP_STATUS.INTERNAL_SERVER_ERROR
-          )
-        }
-        next()
+    app.use((error: KRSError, req: Request, res: Response, next: NextFunction) => {
+      log.error(error)
+      if (error instanceof KRSError) {
+        KRSResponse.error(req, res, error.serializeErrors(), error.status_code)
+      } else {
+        KRSResponse.error(
+          req,
+          res,
+          {
+            error_code: ['INTERNAL_SERVER_ERROR'],
+            status_code: HTTP_STATUS.INTERNAL_SERVER_ERROR,
+            message: 'Internal Server Error'
+          },
+          HTTP_STATUS.INTERNAL_SERVER_ERROR
+        )
       }
-    )
+      next()
+    })
   }
   private async createSocketIO(httpServer: http.Server): Promise<Server> {
     const socketIO: Server = new Server(httpServer, {
